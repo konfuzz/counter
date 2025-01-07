@@ -167,32 +167,3 @@ class Counter {
     }
   }
 }
-
-const counter = document.querySelector(".counter");
-
-const c = new Counter(".counter2", { start: 0, end: 1000, step: 10, duration: 5000, formatter: (value) => value > 990 ? `${value.toFixed(2)}%` : `${value.toFixed(2)}`, lazy: false, playOnce: false, easing: 'linear', autostart: false });
-
-document.querySelector('button').addEventListener('click', () => {
-  c.animate();
-});
-document.querySelector('.stop').addEventListener('click', () => {
-  c.stop();
-});
-document.querySelector('.resume').addEventListener('click', () => {
-  c.resume();
-});
-document.querySelector('.reset').addEventListener('click', () => {
-  c.reset();
-});
-c.on('start', () => {
-  console.log('start');
-});
-c.on('update', (value) => {
-  console.log('update', value);
-  if (value === 200) {
-    c.stop();
-  }
-});
-c.on('complete', () => {
-  console.log('complete');
-});
