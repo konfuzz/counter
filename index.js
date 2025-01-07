@@ -1,4 +1,4 @@
-class Counter {
+export default class Counter {
   constructor(element, {
     start = 0,
     end,
@@ -18,17 +18,18 @@ class Counter {
       throw new Error('Element not found');
     }
 
-    if (options.duration <= 0) {
+    if (duration <= 0) {
       throw new Error('Duration must be positive');
     }
 
-    if (options.end === undefined) {
+    if (end === undefined) {
       throw new Error('End value is required');
     }
 
-    if (!this.easingFunctions[options.easing]) {
+    if (!Counter.easingFunctions[easing]) {
       throw new Error('Invalid easing function');
     }
+
     this.start = parseFloat(start);
     this.end = parseFloat(end);
     this.duration = duration;
@@ -78,7 +79,7 @@ class Counter {
       }
 
       let progress = Math.min((timestamp - startTime) / this.duration, 1);
-      const easedProgress = this.easingFunctions[this.easing](progress);
+      const easedProgress = Counter.easingFunctions[this.easing](progress);
 
       let current;
       if (isReverse) {
@@ -107,16 +108,16 @@ class Counter {
   }
 
   observeVisibility() {
-    const observer = new IntersectionObserver((entries) => {
+    this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          if (this.playOnce) observer.unobserve(this.element);
+          if (this.playOnce) this.observer.unobserve(this.element);
           this.animate();
         }
       });
     });
 
-    observer.observe(this.element);
+    this.observer.observe(this.element);
   }
 
   stop() {
